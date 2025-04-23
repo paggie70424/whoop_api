@@ -2,7 +2,6 @@ import express from 'express';
 import session from 'express-session';
 import passport from 'passport';
 import { Strategy as OAuth2Strategy } from 'passport-oauth2';
-import fetch from 'node-fetch';
 import path from 'path';
 import dotenv from 'dotenv';
 import { fileURLToPath } from 'url';
