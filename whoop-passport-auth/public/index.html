@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login with Whoop</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
+      color: #ffffff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+      padding: 20px;
+      text-align: center;
+    }
+
+    h1 {
+      font-size: 2.5em;
+      margin-bottom: 10px;
+    }
+
+    p {
+      font-size: 1.1em;
+      line-height: 1.6;
+      max-width: 600px;
+      margin-bottom: 30px;
+    }
+
+    #login {
+      background-color: #00c2ff;
+      color: #fff;
+      border: none;
+      padding: 15px 30px;
+      font-size: 1.1em;
+      border-radius: 30px;
+      cursor: pointer;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      transition: background-color 0.3s ease;
+    }
+
+    #login:hover {
+      background-color: #009ecf;
+    }
+  </style>
+</head>
+<body>
+  <h1>Welcome to Human System Page!</h1>
+  <p>
+    To provide you with personalized insights, we may ask you to log in using your Whoop account.
+    Once logged in, we can securely access your data including <strong>Sleep</strong>,
+    <strong>Workout</strong>, <strong>Recovery</strong>, <strong>Profile</strong>,
+    <strong>Body Measurements</strong>, and <strong>Cycle</strong> data.
+  </p>
+  <p>
+    If you agree, please click the button below. You'll be redirected to the official Whoop login page.
+  </p>
+
+  <button id="login">Login with Whoop</button>
+
+  <script>
+    const clientId = '49ecc980-0ae3-454e-8f94-9e029c578769';
+    const redirectUri = 'http://localhost:3000/auth/whoop/callback';
+    const scope = 'read:profile read:recovery read:cycles read:workout read:sleep read:body_measurement';
+
+    function generateState(length = 16) {
+      const charset = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+      let result = '';
+      for (let i = 0; i < length; i++) {
+        result += charset.charAt(Math.floor(Math.random() * charset.length));
+      }
+      return result;
+    }
+
+    document.getElementById('login').addEventListener('click', () => {
+      const state = generateState();
+      sessionStorage.setItem('oauth_state', state);
+
+      const authUrl = `https://api.prod.whoop.com/oauth/oauth2/auth?response_type=code&client_id=${clientId}&redirect_uri=${encodeURIComponent(redirectUri)}&scope=${encodeURIComponent(scope)}&state=${state}`;
+      window.location.href = authUrl;
+    });
+  </script>
+</body>
+</html>

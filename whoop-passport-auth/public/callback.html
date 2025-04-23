@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>WHOOP OAuth Callback</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin-top: 50px; text-align: center; }
+    pre { background-color: #f4f4f4; padding: 1em; border-radius: 5px; width: 60%; margin: auto; text-align: left; }
+  </style>
+</head>
+<body>
+  <h1>WHOOP Profile</h1>
+  <div id="status">Loading...</div>
+  <pre id="profile"></pre>
+
+  <script>
+    // Call backend to fetch WHOOP profile
+    fetch('/whoop/profile')
+      .then(res => {
+        if (!res.ok) throw new Error('Not authenticated');
+        return res.json();
+      })
+      .then(data => {
+        document.getElementById('status').innerText = '✅ Successfully fetched profile!';
+        document.getElementById('profile').innerText = JSON.stringify(data, null, 2);
+      })
+      .catch(err => {
+        document.getElementById('status').innerText = '❌ Failed to fetch profile.';
+        console.error(err);
+      });
+  </script>
+</body>
+</html>
